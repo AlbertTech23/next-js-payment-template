@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { product } from "../libs/product";
 
 const Checkout = () => {
   const [quantity, setQuantity] = useState(1);
@@ -12,11 +13,28 @@ const Checkout = () => {
   };
 
   const checkout = async () => {
-    alert("Checkout SNAP! 🌟")
+    const data = {
+      id: product.id,
+      productName: product.name,
+      price: product.price,
+      quantity: quantity,
+    };
+
+    const response = await fetch("/api/tokenizer", {
+      method: "POST",
+      // headers: {
+      //   "Content-Type": "application/json",
+      // },
+      body: JSON.stringify(data),
+    });
+
+    const requestData = await response.json();
+    // console.log({ requestData });
+    window.snap.pay(requestData.token);
   };
 
   const generatePaymentLink = async () => {
-    alert("Checkout Payment Link! 🔥")
+    alert("Checkout Payment Link! 🔥");
   };
 
   return (
